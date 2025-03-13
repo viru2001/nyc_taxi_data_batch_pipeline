@@ -1,0 +1,4 @@
+[
+  { "name": "payment_type", "type": "INT64", "mode": "REQUIRED" },
+  { "name": "payment_type_name", "type": "STRING", "mode": "NULLABLE" }
+]

@@ -1,0 +1,4 @@
+[
+  { "name": "rate_code_id", "type": "INT64", "mode": "REQUIRED" },
+  { "name": "rate_code_name", "type": "STRING", "mode": "NULLABLE" }
+]

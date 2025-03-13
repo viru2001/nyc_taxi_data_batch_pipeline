@@ -1,0 +1,6 @@
+[
+  { "name": "location_id", "type": "INT64", "mode": "REQUIRED" },
+  { "name": "borough", "type": "STRING", "mode": "NULLABLE" },
+  { "name": "zone", "type": "STRING", "mode": "NULLABLE" },
+  { "name": "service_zone", "type": "STRING", "mode": "NULLABLE" }
+]

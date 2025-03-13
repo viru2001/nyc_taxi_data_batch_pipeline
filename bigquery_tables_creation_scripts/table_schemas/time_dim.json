@@ -1,0 +1,7 @@
+[
+  { "name": "time_id", "type": "INT64", "mode": "REQUIRED" },
+  { "name": "hour", "type": "INT64", "mode": "NULLABLE" },
+  { "name": "minute", "type": "INT64", "mode": "NULLABLE" },
+  { "name": "second", "type": "INT64", "mode": "NULLABLE" },
+  { "name": "period", "type": "STRING", "mode": "NULLABLE" }
+]

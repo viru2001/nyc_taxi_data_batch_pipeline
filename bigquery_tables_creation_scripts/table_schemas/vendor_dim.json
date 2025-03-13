@@ -1,0 +1,4 @@
+[
+  { "name": "vendor_id", "type": "INT64", "mode": "REQUIRED" },
+  { "name": "vendor_name", "type": "STRING", "mode": "NULLABLE" }
+]
