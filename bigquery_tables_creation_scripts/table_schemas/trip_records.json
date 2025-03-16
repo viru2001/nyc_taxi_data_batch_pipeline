@@ -5,8 +5,8 @@
   { "name": "dropoff_datetime", "type": "TIMESTAMP", "mode": "NULLABLE" },
   { "name": "pickup_time_key", "type": "INT64", "mode": "NULLABLE" },
   { "name": "dropoff_time_key", "type": "INT64", "mode": "NULLABLE" },
-  { "name": "pickup_date_id", "type": "DATE", "mode": "NULLABLE" },
-  { "name": "dropoff_date_id", "type": "DATE", "mode": "NULLABLE" },
+  { "name": "pickup_date_id", "type": "INT64", "mode": "NULLABLE" },
+  { "name": "dropoff_date_id", "type": "INT64", "mode": "NULLABLE" },
   { "name": "passenger_count", "type": "INT64", "mode": "NULLABLE" },
   { "name": "trip_distance", "type": "FLOAT64", "mode": "NULLABLE" },
   { "name": "store_and_fwd_flag", "type": "STRING", "mode": "NULLABLE" },
@@ -21,5 +21,6 @@
   { "name": "total_amount", "type": "NUMERIC", "mode": "NULLABLE" },
   { "name": "congestion_surcharge", "type": "NUMERIC", "mode": "NULLABLE" },
   { "name": "airport_fee", "type": "NUMERIC", "mode": "NULLABLE" },
-  { "name": "payment_type", "type": "INT64", "mode": "NULLABLE" }
+  { "name": "payment_type", "type": "INT64", "mode": "NULLABLE" },
+  { "name": "trip_date", "type": "DATE", "mode": "REQUIRED" }
 ]

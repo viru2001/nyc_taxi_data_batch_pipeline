@@ -1,5 +1,5 @@
 [
-  { "name": "date_id", "type": "DATE", "mode": "REQUIRED" },
+  { "name": "date_id", "type": "INT64", "mode": "REQUIRED" },
   { "name": "date", "type": "DATE", "mode": "NULLABLE" },
   { "name": "year", "type": "INT64", "mode": "NULLABLE" },
   { "name": "quarter", "type": "INT64", "mode": "NULLABLE" },
