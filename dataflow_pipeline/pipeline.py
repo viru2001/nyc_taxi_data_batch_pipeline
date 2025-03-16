@@ -121,59 +121,77 @@ def partition_fn(element, num_partitions):
     return mapping.get(key, num_partitions - 1)
 
 
+import json
+from apache_beam.io.filesystems import FileSystems
+# Function to load a JSON schema from GCS.
+def load_schema_from_gcs(gcs_path):
+    with FileSystems.open(gcs_path) as f:
+        schema = json.load(f)
+    # If the schema is a list, wrap it in {"fields": ...}
+        if isinstance(schema, list):
+            schema = {"fields": schema}
+        return schema
+
+
+
 def run():
+    # Load the schemas from GCS.
+    trip_records_schema = load_schema_from_gcs('gs://dataflow_pipeline_nyc_taxi/table_schemas/trip_records.json')
+    calendar_dim_schema = load_schema_from_gcs('gs://dataflow_pipeline_nyc_taxi/table_schemas/calendar_dim.json')
+    time_dim_schema = load_schema_from_gcs('gs://dataflow_pipeline_nyc_taxi/table_schemas/time_dim.json')
+
     # Inline schema definitions for BigQuery tables.
-    trip_records_schema = {
-        "fields": [
-            {"name": "trip_id", "type": "STRING", "mode": "REQUIRED"},
-            {"name": "vendor_id", "type": "INT64", "mode": "REQUIRED"},
-            {"name": "pickup_datetime", "type": "TIMESTAMP", "mode": "NULLABLE"},
-            {"name": "dropoff_datetime", "type": "TIMESTAMP", "mode": "NULLABLE"},
-            {"name": "pickup_time_id", "type": "INT64", "mode": "NULLABLE"},
-            {"name": "dropoff_time_id", "type": "INT64", "mode": "NULLABLE"},
-            {"name": "pickup_date_id", "type": "INT64", "mode": "NULLABLE"},
-            {"name": "dropoff_date_id", "type": "INT64", "mode": "NULLABLE"},
-            {"name": "passenger_count", "type": "INT64", "mode": "NULLABLE"},
-            {"name": "trip_distance", "type": "FLOAT64", "mode": "NULLABLE"},
-            {"name": "store_and_fwd_flag", "type": "STRING", "mode": "NULLABLE"},
-            {"name": "pickup_location_id", "type": "INT64", "mode": "NULLABLE"},
-            {"name": "dropoff_location_id", "type": "INT64", "mode": "NULLABLE"},
-            {"name": "fare_amount", "type": "NUMERIC", "mode": "NULLABLE"},
-            {"name": "extra", "type": "NUMERIC", "mode": "NULLABLE"},
-            {"name": "mta_tax", "type": "NUMERIC", "mode": "NULLABLE"},
-            {"name": "tip_amount", "type": "NUMERIC", "mode": "NULLABLE"},
-            {"name": "tolls_amount", "type": "NUMERIC", "mode": "NULLABLE"},
-            {"name": "improvement_surcharge", "type": "NUMERIC", "mode": "NULLABLE"},
-            {"name": "total_amount", "type": "NUMERIC", "mode": "NULLABLE"},
-            {"name": "congestion_surcharge", "type": "NUMERIC", "mode": "NULLABLE"},
-            {"name": "airport_fee", "type": "NUMERIC", "mode": "NULLABLE"},
-            {"name": "payment_type", "type": "INT64", "mode": "NULLABLE"},
-            {"name": "trip_date", "type": "DATE", "mode": "REQUIRED"}
-        ]
-    }
+    # trip_records_schema = {
+    #     "fields": [
+    #         {"name": "trip_id", "type": "STRING", "mode": "REQUIRED"},
+    #         {"name": "vendor_id", "type": "INT64", "mode": "REQUIRED"},
+    #         {"name": "pickup_datetime", "type": "TIMESTAMP", "mode": "NULLABLE"},
+    #         {"name": "dropoff_datetime", "type": "TIMESTAMP", "mode": "NULLABLE"},
+    #         {"name": "pickup_time_id", "type": "INT64", "mode": "NULLABLE"},
+    #         {"name": "dropoff_time_id", "type": "INT64", "mode": "NULLABLE"},
+    #         {"name": "pickup_date_id", "type": "INT64", "mode": "NULLABLE"},
+    #         {"name": "dropoff_date_id", "type": "INT64", "mode": "NULLABLE"},
+    #         {"name": "passenger_count", "type": "INT64", "mode": "NULLABLE"},
+    #         {"name": "trip_distance", "type": "FLOAT64", "mode": "NULLABLE"},
+    #         {"name": "store_and_fwd_flag", "type": "STRING", "mode": "NULLABLE"},
+    #         {"name": "pickup_location_id", "type": "INT64", "mode": "NULLABLE"},
+    #         {"name": "dropoff_location_id", "type": "INT64", "mode": "NULLABLE"},
+    #         {"name": "fare_amount", "type": "NUMERIC", "mode": "NULLABLE"},
+    #         {"name": "extra", "type": "NUMERIC", "mode": "NULLABLE"},
+    #         {"name": "mta_tax", "type": "NUMERIC", "mode": "NULLABLE"},
+    #         {"name": "tip_amount", "type": "NUMERIC", "mode": "NULLABLE"},
+    #         {"name": "tolls_amount", "type": "NUMERIC", "mode": "NULLABLE"},
+    #         {"name": "improvement_surcharge", "type": "NUMERIC", "mode": "NULLABLE"},
+    #         {"name": "total_amount", "type": "NUMERIC", "mode": "NULLABLE"},
+    #         {"name": "congestion_surcharge", "type": "NUMERIC", "mode": "NULLABLE"},
+    #         {"name": "airport_fee", "type": "NUMERIC", "mode": "NULLABLE"},
+    #         {"name": "payment_type", "type": "INT64", "mode": "NULLABLE"},
+    #         {"name": "trip_date", "type": "DATE", "mode": "REQUIRED"}
+    #     ]
+    # }
 
-    calendar_dim_schema = {
-        "fields": [
-            {"name": "date_id", "type": "INT64", "mode": "REQUIRED"},
-            {"name": "date", "type": "DATE", "mode": "NULLABLE"},
-            {"name": "year", "type": "INT64", "mode": "NULLABLE"},
-            {"name": "quarter", "type": "INT64", "mode": "NULLABLE"},
-            {"name": "month", "type": "INT64", "mode": "NULLABLE"},
-            {"name": "day", "type": "INT64", "mode": "NULLABLE"},
-            {"name": "day_of_week", "type": "STRING", "mode": "NULLABLE"}
-        ]
-    }
+    # calendar_dim_schema = {
+    #     "fields": [
+    #         {"name": "date_id", "type": "INT64", "mode": "REQUIRED"},
+    #         {"name": "date", "type": "DATE", "mode": "NULLABLE"},
+    #         {"name": "year", "type": "INT64", "mode": "NULLABLE"},
+    #         {"name": "quarter", "type": "INT64", "mode": "NULLABLE"},
+    #         {"name": "month", "type": "INT64", "mode": "NULLABLE"},
+    #         {"name": "day", "type": "INT64", "mode": "NULLABLE"},
+    #         {"name": "day_of_week", "type": "STRING", "mode": "NULLABLE"}
+    #     ]
+    # }
 
-    time_dim_schema = {
-        "fields": [
-            {"name": "time_id", "type": "INT64", "mode": "REQUIRED"},
-            {"name": "hour", "type": "INT64", "mode": "NULLABLE"},
-            {"name": "minute", "type": "INT64", "mode": "NULLABLE"},
-            {"name": "second", "type": "INT64", "mode": "NULLABLE"},
-            {"name": "period", "type": "STRING", "mode": "NULLABLE"}
-        ]
+    # time_dim_schema = {
+    #     "fields": [
+    #         {"name": "time_id", "type": "INT64", "mode": "REQUIRED"},
+    #         {"name": "hour", "type": "INT64", "mode": "NULLABLE"},
+    #         {"name": "minute", "type": "INT64", "mode": "NULLABLE"},
+    #         {"name": "second", "type": "INT64", "mode": "NULLABLE"},
+    #         {"name": "period", "type": "STRING", "mode": "NULLABLE"}
+    #     ]
 
-    }
+    # }
 
     # Define a custom PipelineOption to pass additional command-line parameters.
     class CustomOptions(PipelineOptions):
