@@ -5,32 +5,7 @@ from airflow.providers.google.cloud.sensors.gcs import GCSObjectExistenceSensor
 from airflow.providers.apache.beam.operators.beam import BeamRunPythonPipelineOperator
 from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
-
-# def download_sql():
-#     # Download SQL file from GCS
-#     hook = GCSHook()
-#     sql_bytes = hook.download(bucket_name='taxi_data_batch_pipeline_airflow', object_name='data/merge_time_and_calender_dim.sql')
-#     if not sql_bytes:
-#         print("Failed to load SQL file from GCS. Check the bucket name, object name, and file contents.")
-#         raise ValueError("SQL file is empty or not found.")
-#     else:
-#         print(sql_bytes)
-#     return sql_bytes.decode('utf-8') if isinstance(sql_bytes, bytes) else sql_bytes
-
-# def run_query(**context):
-#     # Get SQL content from XCom
-#     sql = context['ti'].xcom_pull(task_ids='download_sql')
-#     # Run the query using BigQueryInsertJobOperator
-#     bq_op = BigQueryInsertJobOperator(
-#         task_id='run_query',
-#         configuration={
-#             "query": {
-#                 "query": sql,
-#                 "useLegacySql": False,
-#             }
-#         }
-#     )
-#     bq_op.execute(context)
+import logging
 
 def download_and_execute_sql(bucket_name, object_name, **context):
     """Downloads SQL from GCS and executes it in BigQuery."""
@@ -52,7 +27,7 @@ def download_and_execute_sql(bucket_name, object_name, **context):
         bq_op.execute(context)
 
     except Exception as e:
-        print(f"Error: {e}")
+        logging.error(f"Error: {e}")
         raise
 
 
@@ -69,8 +44,8 @@ default_args = {
 with DAG(
     'taxi_data_etl_daily',
     default_args=default_args,
-    schedule_interval='0 */2 * * *',  # For testing: runs every 10 minutes.
-    # schedule_interval='@daily',       # For production: run once daily.
+    # schedule_interval='0 */2 * * *',  # For testing: runs every 10 minutes.
+    schedule_interval='@daily',       # For production: run once daily.
     catchup=False,
     description="DAG to  taxi data Dataflow pipeline with dynamic bus_date",
     params={
@@ -98,7 +73,7 @@ with DAG(
         pipeline_options={
             'project': 'nyc-taxi-batch-dataflow',
             'region': 'us-central1',
-            'zone' : '{{ params.zone }}',
+            # 'zone' : '{{ params.zone }}',
             'temp_location': 'gs://dataflow_pipeline_nyc_taxi/temp',
             'staging_location': 'gs://dataflow_pipeline_nyc_taxi/staging',
             # The job name is built using the execution date without dashes.
@@ -116,7 +91,7 @@ with DAG(
     )
 
     run_query_on_bigquery_table = PythonOperator(
-        task_id='download_and_execute',
+        task_id='download_and_execute_bigquery_sql',
         python_callable=download_and_execute_sql,
         op_kwargs={
             'bucket_name': 'taxi_data_batch_pipeline_airflow', 
