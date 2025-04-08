@@ -17,7 +17,10 @@ from
 group by
     tr.payment_type,
     pt.payment_type_name
-    -- total number of trips per day of the week
+
+
+
+-- total number of trips per day of the week
 select
     cal.day_of_week,
     count(*) as number_of_trips
@@ -33,7 +36,10 @@ from
     left join nyc - taxi - batch - dataflow.trip_data.calendar_dim cal on tr.pickup_date_id = cal.date_id
 group by
     cal.day_of_week
-    -- total number of trips per month
+
+
+
+-- total number of trips per month
 select
     cal.year,
     FORMAT_DATE (
@@ -54,7 +60,11 @@ from
 group by
     cal.month,
     cal.year
-    -- avaerage fare amount per month
+
+
+
+
+-- avaerage fare amount per month
 select
     cal.year,
     FORMAT_DATE (
@@ -76,7 +86,11 @@ from
 group by
     cal.month,
     cal.year
-    -- average trip distance per month
+
+
+
+
+-- average trip distance per month
 select
     cal.year,
     FORMAT_DATE (
@@ -98,7 +112,12 @@ from
 group by
     cal.month,
     cal.year
-    -- top 10 pickup locations
+
+
+
+
+
+-- top 10 pickup locations
 select
     zone_dim.zone,
     count(*) as number_of_trips
@@ -118,7 +137,12 @@ order by
     number_of_trips desc
 limit
     10
-    -- top 10 dropoff locations
+
+
+
+
+
+-- top 10 dropoff locations
 select
     zone_dim.zone,
     count(*) as number_of_trips
@@ -138,8 +162,12 @@ order by
     number_of_trips desc
 limit
     10
-    -- Most Lucrative Routes (Highest Average Fare):
-    -- routes with highest Profitability
+
+
+
+
+-- Most Lucrative Routes (Highest Average Fare):
+-- routes with highest Profitability
 select
     zone_dim1.zone as pickup_location,
     zone_dim2.zone as dropoff_location,
@@ -164,8 +192,12 @@ order by
     average_fare_amount desc
 limit
     10
-    -- Visualization: Table or bar chart, joining with location names for readability.
-    -- Popular Routes (Pick-Up to Drop-Off):
+
+
+
+
+-- Visualization: Table or bar chart, joining with location names for readability.
+-- Popular Routes (Pick-Up to Drop-Off):
 select
     zone_dim1.zone as pickup_location,
     zone_dim2.zone as dropoff_location,
@@ -189,7 +221,11 @@ order by
     number_of_trips desc
 limit
     10
-    -- Average Fare by Pick-Up Location
+
+
+
+
+-- Average Fare by Pick-Up Location
 select
     zone_dim1.zone as pickup_location,
     round(avg(tr.fare_amount), 2) as average_fare_amount
@@ -210,7 +246,11 @@ order by
     average_fare_amount desc
 limit
     10
-    -- Busy Hours:
+
+
+
+
+-- Busy Hours of a day:
 SELECT
     EXTRACT(
         HOUR
@@ -226,6 +266,9 @@ GROUP BY
     hour
 ORDER BY
     hour;
+
+
+
 
 -- Weekday vs. Weekend Trips:
 -- Compares trip volumes on weekdays and weekends.
@@ -245,6 +288,8 @@ where
     trip_date >= '2023-01-01'
 GROUP BY
     day_type;
+
+
 
 -- Peak vs. Off-Peak Fares:
 -- Compares average fares during peak hours (e.g., 8am-10am, 4pm-6pm) vs. off-peak.
