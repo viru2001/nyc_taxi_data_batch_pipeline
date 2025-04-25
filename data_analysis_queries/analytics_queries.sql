@@ -9,11 +9,11 @@ from
             payment_type,
             total_amount
         from
-            nyc - taxi - batch - dataflow.trip_data.trip_records
+            nyc-taxi-batch-dataflow.trip_data.trip_records
         where
             trip_date >= '2023-01-01'
     ) tr
-    left join nyc - taxi - batch - dataflow.trip_data.payment_method_dim pt on tr.payment_type = pt.payment_type
+    left join nyc-taxi-batch-dataflow.trip_data.payment_method_dim pt on tr.payment_type = pt.payment_type
 group by
     tr.payment_type,
     pt.payment_type_name
@@ -29,11 +29,11 @@ from
         select
             pickup_date_id
         from
-            nyc - taxi - batch - dataflow.trip_data.trip_records
+            nyc-taxi-batch-dataflow.trip_data.trip_records
         where
             trip_date >= '2023-01-01'
     ) tr
-    left join nyc - taxi - batch - dataflow.trip_data.calendar_dim cal on tr.pickup_date_id = cal.date_id
+    left join nyc-taxi-batch-dataflow.trip_data.calendar_dim cal on tr.pickup_date_id = cal.date_id
 group by
     cal.day_of_week
 
@@ -52,11 +52,11 @@ from
         select
             pickup_date_id
         from
-            nyc - taxi - batch - dataflow.trip_data.trip_records
+            nyc-taxi-batch-dataflow.trip_data.trip_records
         where
             trip_date >= '2023-01-01'
     ) tr
-    left join nyc - taxi - batch - dataflow.trip_data.calendar_dim cal on tr.pickup_date_id = cal.date_id
+    left join nyc-taxi-batch-dataflow.trip_data.calendar_dim cal on tr.pickup_date_id = cal.date_id
 group by
     cal.month,
     cal.year
@@ -78,11 +78,11 @@ from
             pickup_date_id,
             fare_amount
         from
-            nyc - taxi - batch - dataflow.trip_data.trip_records
+            nyc-taxi-batch-dataflow.trip_data.trip_records
         where
             trip_date >= '2023-01-01'
     ) tr
-    left join nyc - taxi - batch - dataflow.trip_data.calendar_dim cal on tr.pickup_date_id = cal.date_id
+    left join nyc-taxi-batch-dataflow.trip_data.calendar_dim cal on tr.pickup_date_id = cal.date_id
 group by
     cal.month,
     cal.year
@@ -104,11 +104,11 @@ from
             pickup_date_id,
             trip_distance
         from
-            nyc - taxi - batch - dataflow.trip_data.trip_records
+            nyc-taxi-batch-dataflow.trip_data.trip_records
         where
             trip_date >= '2023-01-01'
     ) tr
-    left join nyc - taxi - batch - dataflow.trip_data.calendar_dim cal on tr.pickup_date_id = cal.date_id
+    left join nyc-taxi-batch-dataflow.trip_data.calendar_dim cal on tr.pickup_date_id = cal.date_id
 group by
     cal.month,
     cal.year
@@ -126,11 +126,11 @@ from
         select
             pickup_location_id
         from
-            nyc - taxi - batch - dataflow.trip_data.trip_records
+            nyc-taxi-batch-dataflow.trip_data.trip_records
         where
             trip_date >= '2023-01-01'
     ) tr
-    left join nyc - taxi - batch - dataflow.trip_data.taxi_zone_dim zone_dim on zone_dim.location_id = tr.pickup_location_id
+    left join nyc-taxi-batch-dataflow.trip_data.taxi_zone_dim zone_dim on zone_dim.location_id = tr.pickup_location_id
 group by
     zone_dim.zone
 order by
@@ -151,11 +151,11 @@ from
         select
             dropoff_location_id
         from
-            nyc - taxi - batch - dataflow.trip_data.trip_records
+            nyc-taxi-batch-dataflow.trip_data.trip_records
         where
             trip_date >= '2023-01-01'
     ) tr
-    left join nyc - taxi - batch - dataflow.trip_data.taxi_zone_dim zone_dim on zone_dim.location_id = tr.dropoff_location_id
+    left join nyc-taxi-batch-dataflow.trip_data.taxi_zone_dim zone_dim on zone_dim.location_id = tr.dropoff_location_id
 group by
     zone_dim.zone
 order by
@@ -179,12 +179,12 @@ from
             dropoff_location_id,
             fare_amount
         from
-            nyc - taxi - batch - dataflow.trip_data.trip_records
+            nyc-taxi-batch-dataflow.trip_data.trip_records
         where
             trip_date >= '2023-01-01'
     ) tr
-    left join nyc - taxi - batch - dataflow.trip_data.taxi_zone_dim zone_dim1 on zone_dim1.location_id = tr.pickup_location_id
-    left join nyc - taxi - batch - dataflow.trip_data.taxi_zone_dim zone_dim2 on zone_dim2.location_id = tr.dropoff_location_id
+    left join nyc-taxi-batch-dataflow.trip_data.taxi_zone_dim zone_dim1 on zone_dim1.location_id = tr.pickup_location_id
+    left join nyc-taxi-batch-dataflow.trip_data.taxi_zone_dim zone_dim2 on zone_dim2.location_id = tr.dropoff_location_id
 group by
     pickup_location,
     dropoff_location
@@ -208,12 +208,12 @@ from
             pickup_location_id,
             dropoff_location_id
         from
-            nyc - taxi - batch - dataflow.trip_data.trip_records
+            nyc-taxi-batch-dataflow.trip_data.trip_records
         where
             trip_date >= '2023-01-01'
     ) tr
-    left join nyc - taxi - batch - dataflow.trip_data.taxi_zone_dim zone_dim1 on zone_dim1.location_id = tr.pickup_location_id
-    left join nyc - taxi - batch - dataflow.trip_data.taxi_zone_dim zone_dim2 on zone_dim2.location_id = tr.dropoff_location_id
+    left join nyc-taxi-batch-dataflow.trip_data.taxi_zone_dim zone_dim1 on zone_dim1.location_id = tr.pickup_location_id
+    left join nyc-taxi-batch-dataflow.trip_data.taxi_zone_dim zone_dim2 on zone_dim2.location_id = tr.dropoff_location_id
 group by
     pickup_location,
     dropoff_location
@@ -235,11 +235,11 @@ from
             pickup_location_id,
             fare_amount
         from
-            nyc - taxi - batch - dataflow.trip_data.trip_records
+            nyc-taxi-batch-dataflow.trip_data.trip_records
         where
             trip_date >= '2023-01-01'
     ) tr
-    left join nyc - taxi - batch - dataflow.trip_data.taxi_zone_dim zone_dim1 on zone_dim1.location_id = tr.pickup_location_id
+    left join nyc-taxi-batch-dataflow.trip_data.taxi_zone_dim zone_dim1 on zone_dim1.location_id = tr.pickup_location_id
 group by
     pickup_location
 order by
@@ -259,7 +259,7 @@ SELECT
     ) AS hour,
     COUNT(*) AS trip_count
 from
-    nyc - taxi - batch - dataflow.trip_data.trip_records
+    nyc-taxi-batch-dataflow.trip_data.trip_records
 where
     trip_date >= '2023-01-01'
 GROUP BY
@@ -283,7 +283,7 @@ SELECT
     END AS day_type,
     COUNT(*) AS trip_count
 FROM
-    nyc - taxi - batch - dataflow.trip_data.trip_records
+    nyc-taxi-batch-dataflow.trip_data.trip_records
 where
     trip_date >= '2023-01-01'
 GROUP BY
