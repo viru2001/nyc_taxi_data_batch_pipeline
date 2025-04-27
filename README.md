@@ -23,7 +23,8 @@
 
 The data is structured following a star schema, optimized for analytical queries.
 
-- **Fact Table** :  `trip_records` — stores individual trip details with foreign-key references to all dimensions.
+- **Fact Table** :
+  - `trip_records` : stores individual trip details with foreign-key references to all dimensions.
 - **Dimension Tables**:
   - `vendor_dim` : stores details about the taxi vendor
   - `calendar_dim` : stores temporal information related to the trip date (date_id, day, month, year).
@@ -57,7 +58,7 @@ The data is structured following a star schema, optimized for analytical queries
   - Fetches CSVs from GCS, transforms them into BigQuery load jobs, and load data into dimension tables.
 
 - **Analytics SQL** (`data_analysis_queries/`)  
-  - Pre-written queries for getting insights from data like —trip counts over time, fare distributions, zone-based analyses, etc.
+  - Pre-written queries for getting insights from data like trip counts over time, fare distributions, zone-based analyses, etc.
 
 ---
 
@@ -84,3 +85,5 @@ The dashboard includes visualizations of key metrics and stat cards along with d
 **Stat cards:** Total Trips | Total Fare Amt. | Total Passengers | Avg Trip Duration | Avg Fare Amt. | Total Tip Amt.
 
 ![Dashboard Screenshot](https://github.com/user-attachments/assets/a300cf9e-b232-43c4-9969-182c70949f7d)
+
+[Dashboard Interactive Video Demo](https://drive.google.com/file/d/14HbjqmLtOs6orMunyVTMWRfKhAa-9aRn/view?usp=sharing)
